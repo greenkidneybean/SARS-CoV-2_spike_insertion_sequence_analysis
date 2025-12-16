@@ -3,7 +3,7 @@ library(msa)
 library(stringr)
 library(viridis)
 
-sars2genome <- readDNAStringSet("~/data/sars-cov-2 ace2/sars-cov-2 genome.fasta") #Downloaded from https://www.ncbi.nlm.nih.gov/nuccore/1798174254 on 1/8/25
+sars2genome <- readDNAStringSet("../data/sars-cov-2 genome.fasta") #Downloaded from https://www.ncbi.nlm.nih.gov/nuccore/1798174254 on 1/8/25
 reverseComplement(sars2genome) -> rc_sars2genome
 
 sarstwelvemers <- sapply(1:29890, function (x) substr(as.character(sars2genome[[1]]), x, x + 11))
@@ -75,9 +75,9 @@ lines(c(0:12), c(rep(0, 5), cumsum(round(digits = 6, table(c(sapply(rcsarstwelve
 library(DescTools) #Confidence intervals for binomial proportions. https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Jeffreys_interval
 BinomCI(6, 85, method = "jeffreys") # 6 A -> T mutations out of 85 4-fold degenerate As in the locally non-recombining region of spike
 BinomCI(0, 150, method = "jeffreys") # 0 T -> G mutations out of 150 4-fold degenerate Ts in the locally non-recombining region of spike
-BinomCI(28, 278, method = "jeffreys") 
+BinomCI(28, 278, method = "jeffreys")
 
-readDNAMultipleAlignment("~/data/sars-cov-2 ace2/furin/pekar-segment11-fasta-alignment-masked.fasta") -> pekaraln #aligned segment 11 from Pekar's 2022 masked recCA (segment 11 according to Temmam 2022) to the equivalent section of Wuhan-1 using Clustal omega.
+readDNAMultipleAlignment("../data/pekar-segment11-fasta-alignment-masked.fasta") -> pekaraln #aligned segment 11 from Pekar's 2022 masked recCA (segment 11 according to Temmam 2022) to the equivalent section of Wuhan-1 using Clustal omega.
 table(strsplit(as.character(pekaraln@unmasked$`EPI_ISL_406798_Human_Wuhan/WH01/2019_China_2019`), "")[[1]][which(strsplit(as.character(pekaraln@unmasked$pekar), "")[[1]] == "A")])
 table(strsplit(as.character(pekaraln@unmasked$`EPI_ISL_406798_Human_Wuhan/WH01/2019_China_2019`), "")[[1]][which(strsplit(as.character(pekaraln@unmasked$pekar), "")[[1]] == "T")])
 table(strsplit(as.character(pekaraln@unmasked$`EPI_ISL_406798_Human_Wuhan/WH01/2019_China_2019`), "")[[1]][which(strsplit(as.character(pekaraln@unmasked$pekar), "")[[1]] == "C")])
@@ -115,11 +115,11 @@ sapply(1:16, function (x) text(x*1.2, 20, basecounts.4fg[x]))
 #SPRRA
 #insert1: CN CCN CGN/AGR CGN/AGR G = 4*4*6*6 = 576 possible synonymous codings
 #insert2: N CCN CGN/AGR CGN/AGR GC = 576 possible synonymous codings; no different from insert1, so I didn't analyze these.
-sprra.syn.codings <- apply(expand.grid(c("CA", "CC", "CG", "CT"), 
-                                       c("CCA", "CCC", "CCG", "CCT"), 
-                                       c("CGA", "CGC", "CGG", "CGT", "AGA", "AGG"), 
-                                       c("CGA", "CGC", "CGG", "CGT", "AGA", "AGG"), 
-                                       "G"), 
+sprra.syn.codings <- apply(expand.grid(c("CA", "CC", "CG", "CT"),
+                                       c("CCA", "CCC", "CCG", "CCT"),
+                                       c("CGA", "CGC", "CGG", "CGT", "AGA", "AGG"),
+                                       c("CGA", "CGC", "CGG", "CGT", "AGA", "AGG"),
+                                       "G"),
                            1, function (x) paste0(x, collapse = ""))
 cumsum(table(sapply(sprra.syn.codings, function (x) sum(strsplit(x, "")[[1]] == strsplit("CACGTAGTGTAG", "")[[1]])))/576) #SARS2 adjoining sequence
 cumsum(table(sapply(sprra.syn.codings, function (x) sum(strsplit(x, "")[[1]] == strsplit("CACGTAGTGTGG", "")[[1]])))/576) #ancestral adjoining sequence
@@ -131,7 +131,7 @@ cumsum(table(sapply(sprra.syn.codings, function (x) sum(strsplit(x, "")[[1]] == 
 #The substitution model (GTR+F+G+I) was chosen to match what Pekar used to create RecCA, according to the Methods section of his 2022 RecCA paper.
 #The outputted tree (segment11_v3.treefile) matched segment 11 from Temmam's supplementary figure 2. Node7 on the tree corresponds to the MRCA of the human and BANAL coronaviruses (verified by visualization on icytree.org).
 
-read.table("~/data/sars-cov-2 ace2/furin/segment11_v3.state", stringsAsFactors = F, header = T) -> ancrec
+read.table("../data/segment11_v3.state", stringsAsFactors = F, header = T) -> ancrec
 s2anc <- split(ancrec, ancrec$Node)$Node7
 t(apply(s2anc[c(1049:1061, 1074:1084, 1088:1090),4:7], 1, cumsum)) -> s1s2ancrec
 plot(ylim=c(0,1), xlim=c(1,30), 1, type = "n")
@@ -165,4 +165,4 @@ count.matches.to.insert.in.simulated.genomes <- function (replicates, acgt.dist 
 
 matches.to.inserts <- count.matches.to.insert.in.simulated.genomes(1000)
 mean(matches.to.inserts)
-save(matches.to.inserts, file = "~/data/sars-cov-2 ace2/furin/matches.to.inserts.sim.R")
+save(matches.to.inserts, file = "output_matches-to-inserts-sim.rdata")
