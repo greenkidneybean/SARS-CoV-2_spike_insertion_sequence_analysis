@@ -2,7 +2,7 @@
 
 Supplementary data and code for the analysis of the SARS-CoV-2 S1/S2 insertion sequence, with a summary of the contents below
 
-SARS-CoV-2_spike_insertion_sequence_analysis
+**SARS-CoV-2_spike_insertion_sequence_analysis**
 - README.md
 - data
     - GARD définitif_11.fa - segment11 alignment from Temmam 2022

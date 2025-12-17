@@ -165,4 +165,4 @@ count.matches.to.insert.in.simulated.genomes <- function (replicates, acgt.dist 
 
 matches.to.inserts <- count.matches.to.insert.in.simulated.genomes(1000)
 mean(matches.to.inserts)
-save(matches.to.inserts, file = "output_matches-to-inserts-sim.rdata")
+save(matches.to.inserts, file = "../data/output_matches-to-inserts-sim.RData")
