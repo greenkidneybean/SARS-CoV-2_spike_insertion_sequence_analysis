@@ -21,3 +21,5 @@ Supplementary data and code for the analysis of the SARS-CoV-2 S1/S2 insertion s
     - Supplementary Figure 3.ai
 - scripts
     - sars-cov-2_insertion-sequence-analysis.R - Analysis of the insertion sequence and mutation frequency in the SARS-CoV-2 MRCA
+- tables
+    - Supplementary Table 1.csv - Four best-matching segments across the SARS-CoV-2 genome to the insertion sequence
