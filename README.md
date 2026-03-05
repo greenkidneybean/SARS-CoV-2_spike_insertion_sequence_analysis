@@ -14,11 +14,12 @@ Supplementary data and code for the analysis of the SARS-CoV-2 S1/S2 insertion s
     - segment11_v3.state - Ancestral reconstructions outputted by IQ-TREE 2
     - segment11_v3.treefile - Phylogenetic tree of segment11 sequences from [Temmam 2022](https://pubmed.ncbi.nlm.nih.gov/35172323/)
 - figures
-    - Figure 1.ai
-    - Figure 2.ai
-    - Supplementary Figure 1.ai
-    - Supplementary Figure 2.ai
-    - Supplementary Figure 3.ai
+    - Figure 1 Revision.ai
+    - Figure 2 Revision.ai
+    - Supplementary Figure 1 Revision.ai
+    - Supplementary Figure 2 Revision.ai
+    - Supplementary Figure 3 Revision.ai
+    - Supplementary Figure 4 Revision.ai
 - scripts
     - sars-cov-2_insertion-sequence-analysis.R - Analysis of the insertion sequence and mutation frequency in the SARS-CoV-2 MRCA
 - tables
