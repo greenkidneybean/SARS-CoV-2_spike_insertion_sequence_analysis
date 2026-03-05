@@ -5,7 +5,7 @@ Supplementary data and code for the analysis of the SARS-CoV-2 S1/S2 insertion s
 **SARS-CoV-2_spike_insertion_sequence_analysis**
 - README.md
 - data
-    - GARD définitif_11.fa - segment11 alignment from [Temmam 2022](https://pubmed.ncbi.nlm.nih.gov/35172323/)
+    - GARD définitif_11_with_Rp22DB159_and_BtSY2.txt - segment11 alignment from [Temmam 2022](https://pubmed.ncbi.nlm.nih.gov/35172323/)
     - output_matches-to-inserts-sim.RData - Number of matches of 9 nucleotides or more to the insertion sequence in 1000 simulated genomes
     - pekar_MRCA_masked.fasta - Most recent common ancestor for SARS-CoV-2 from [Pekar 2025](https://pubmed.ncbi.nlm.nih.gov/40339581/)
     - pekar-segment11-fasta-alignment-masked.fasta - Aligned segment11 from [Pekar 2022](https://pubmed.ncbi.nlm.nih.gov/35881005/) masked recCA to the equivalent section of Wuhan-1
