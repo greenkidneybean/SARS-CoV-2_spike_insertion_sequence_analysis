@@ -5,14 +5,14 @@ Supplementary data and code for the analysis of the SARS-CoV-2 S1/S2 insertion s
 **SARS-CoV-2_spike_insertion_sequence_analysis**
 - README.md
 - data
-    - GARD définitif_11_with_Rp22DB159_and_BtSY2.txt - segment11 alignment from [Temmam 2022](https://pubmed.ncbi.nlm.nih.gov/35172323/)
-    - output_matches-to-inserts-sim.RData - Number of matches of 9 nucleotides or more to the insertion sequence in 1000 simulated genomes
+    - GARD définitif_11_with_Rp22DB159_and_BtSY2.txt - segment11 alignment from [Temmam 2022](https://pubmed.ncbi.nlm.nih.gov/35172323/) with the addition of sequences Rp22DB159 and BtSY2
+    - output_matches-to-inserts-sim_revision.RData - Number of matches of 9 nucleotides or more to the insertion sequence in 1000 simulated genomes
     - pekar_MRCA_masked.fasta - Most recent common ancestor for SARS-CoV-2 from [Pekar 2025](https://pubmed.ncbi.nlm.nih.gov/40339581/)
     - pekar-segment11-fasta-alignment-masked.fasta - Aligned segment11 from [Pekar 2022](https://pubmed.ncbi.nlm.nih.gov/35881005/) masked recCA to the equivalent section of Wuhan-1
     - sars-cov-2 genome.fasta - Wuhan-1 SARS-CoV-2 genome downloaded from [NCBI](https://www.ncbi.nlm.nih.gov/nuccore/1798174254) on 1/8/25
-    - segment11_v3 - Phylip-formatted version of the GARD definitif_11.fa file
-    - segment11_v3.state - Ancestral reconstructions outputted by IQ-TREE 2
-    - segment11_v3.treefile - Phylogenetic tree of segment11 sequences from [Temmam 2022](https://pubmed.ncbi.nlm.nih.gov/35172323/)
+    - segment11_revision - Phylip-formatted version of the GARD definitif_11.fa file
+    - segment11_revision.state - Ancestral reconstructions outputted by IQ-TREE 2
+    - segment11_revision.treefile - Phylogenetic tree of segment11 sequences from [Temmam 2022](https://pubmed.ncbi.nlm.nih.gov/35172323/)
 - figures
     - Figure 1 Revision.ai
     - Figure 2 Revision.ai
@@ -21,6 +21,6 @@ Supplementary data and code for the analysis of the SARS-CoV-2 S1/S2 insertion s
     - Supplementary Figure 3 Revision.ai
     - Supplementary Figure 4 Revision.ai
 - scripts
-    - sars-cov-2_insertion-sequence-analysis.R - Analysis of the insertion sequence and mutation frequency in the SARS-CoV-2 MRCA
+    - sars-cov-2_insertion-sequence-analysis_revision.R - Analysis of the insertion sequence and mutation frequency in the SARS-CoV-2 MRCA with revisional changes
 - tables
     - Supplementary Table 1.csv - Four best-matching segments across the SARS-CoV-2 genome to the insertion sequence
