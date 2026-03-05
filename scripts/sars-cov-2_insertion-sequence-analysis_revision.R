@@ -22,11 +22,10 @@ sort(sapply(rcsarstwelvemers, function (x) sum(strsplit(x, "")[[1]] == strsplit(
 
 # CTCCTCGGCGGG  #insert 1
 #  TCCTCGGCGGGC #insert 2
-# CTACTTGGCGTG  #match 1 (SARS2 to insert 1) #At position 23454 - only ~150 nt away, which is curious. Two of the mutations are nonsynonymous in the context of the insertion site (ACT<->CCT and TGG<->CGG), but the third is synonymous and unlikely (CGT<->CGG, where T<->G is not seen from the MRCA reconstruction to SARS2 (using two sided arrows because it is possible for either the insertion site or the donor site to have mutated after the duplication; but I haven't checked whether they are synonymous/nonsynonymous in the context of the donor. Synonymous changes in the donor might happen, while nonsynonymouus would be assumed to be selected against (while at the insertion site, nonsynonymous might be assumed to be selected FOR)).)
+# CTACTTGGCGTG  #match 1 (SARS2 to insert 1) #At position 23454 - only ~150 nt away, which is curious. Two of the mutations are nonsynonymous in the context of the insertion site (ACT<->CCT and TGG<->CGG), but the third is synonymous and unlikely (CGT<->CGG, where T<->G is not seen from the MRCA reconstruction to SARS2 (using two sided arrows because it is possible for either the insertion site or the donor site to have mutated after the duplication; but I haven't checked whether they are synonymous/nonsynonymous in the context of the donor. Synonymous changes in the donor might happen, while nonsynonymous would be assumed to be selected against (while at the insertion site, nonsynonymous might be assumed to be selected FOR)).)
 # CTTCTTCGCGGG  #match 2 (SARS2 reverse complement to insert 1) #At position 11630. All three mutations are nonsynonymous (TCT<->CCT and TCG<->CGG)
 # CTCCTCCACGGA  #match 3 (SARS2 reverse complement to insert 1) #At position 29528. A P<->R mutation involves both a synonymous and a nonsynonymous change (CCA<->CGG) and the last change is nonsynonymous (A[CA]<->G[CA]). The synonymous change is not super likely (A<->G; G->A is in 2 of 9 4-fold degenerate Gs: low N.)
 #  TCTTCTGCAGGC #match 5 (SARS2 to insert 2) #At position 179. All three mutations are nonsynonymous (CTT<->CCT, CTG<->CGG, CAG<->CGG)
-
 
 #Considering both insert1 and insert2 in a way that accounts for subsequent 12-mers being correlated in their amount of matching to insert1 and insert2
 cumsum(round(digits = 6, table(sapply(1:(length(sarstwelvemers) - 1), function (x) max(sum(strsplit(sarstwelvemers[x], "")[[1]] == strsplit(insert1, "")[[1]]), sum(strsplit(sarstwelvemers[x+1], "")[[1]] == strsplit(insert2, "")[[1]]))))/29889)[11:1])
@@ -77,7 +76,7 @@ BinomCI(6, 85, method = "jeffreys") # 6 A -> T mutations out of 85 4-fold degene
 BinomCI(0, 150, method = "jeffreys") # 0 T -> G mutations out of 150 4-fold degenerate Ts in the locally non-recombining region of spike
 BinomCI(28, 278, method = "jeffreys")
 
-readDNAMultipleAlignment("../data/pekar-segment11-fasta-alignment-masked.fasta") -> pekaraln #aligned segment 11 from Pekar's 2022 masked recCA (segment 11 according to Temmam 2022) to the equivalent section of Wuhan-1 using Clustal omega.
+readDNAMultipleAlignment("~/data/sars-cov-2 ace2/furin/pekar-segment11-fasta-alignment-masked.fasta") -> pekaraln #aligned segment 11 from Pekar's 2022 masked recCA (segment 11 according to Temmam 2022) to the equivalent section of Wuhan-1 using Clustal omega.
 table(strsplit(as.character(pekaraln@unmasked$`EPI_ISL_406798_Human_Wuhan/WH01/2019_China_2019`), "")[[1]][which(strsplit(as.character(pekaraln@unmasked$pekar), "")[[1]] == "A")])
 table(strsplit(as.character(pekaraln@unmasked$`EPI_ISL_406798_Human_Wuhan/WH01/2019_China_2019`), "")[[1]][which(strsplit(as.character(pekaraln@unmasked$pekar), "")[[1]] == "T")])
 table(strsplit(as.character(pekaraln@unmasked$`EPI_ISL_406798_Human_Wuhan/WH01/2019_China_2019`), "")[[1]][which(strsplit(as.character(pekaraln@unmasked$pekar), "")[[1]] == "C")])
@@ -126,19 +125,30 @@ cumsum(table(sapply(sprra.syn.codings, function (x) sum(strsplit(x, "")[[1]] == 
 #The median synonymous coding has five identical residues to the adjoining SARS sequence - the same as the actual SPRRA sequence has. It also have five identical residues to the
 #adjoining ancestral sequence, while the actual SPRRA has 6. This happens 89.6% of the time with synonymous SPRRA codings - somewhat unusual, but not crazily so.
 
-#To run iqtree, I first reformatted Temmam's segment11 alignment (GARD définitif_11.fa) as phylip format using the website http://phylogeny.lirmm.fr/phylo_cgi/data_converter.cgi
-#I then ran the following command on biowulf (in the /data/SBGE/meru/furin/ directory) after saving the phylip formatted alignment as segment11_v3: iqtree2 -s segment11_v3 -o L.R.cornut -m GTR+F+G+I -asr -redo
+#To run iqtree, I first reformatted Temmam's segment11 alignment (GARD définitif_11.fa) as "phylip (sequential)" format using the website http://phylogeny.lirmm.fr/phylo_cgi/data_converter.cgi
+#I then ran the following command on biowulf (in the /data/SBGE/meru/furin/ directory) after saving the phylip formatted alignment as segment11_revision: iqtree2 -s segment11_revision -o L.R.cornut -m GTR+F+G+I -asr -redo
 #The substitution model (GTR+F+G+I) was chosen to match what Pekar used to create RecCA, according to the Methods section of his 2022 RecCA paper.
-#The outputted tree (segment11_v3.treefile) matched segment 11 from Temmam's supplementary figure 2. Node7 on the tree corresponds to the MRCA of the human and BANAL coronaviruses (verified by visualization on icytree.org).
+#The outputted tree (segment11_revision.treefile) matched segment 11 from Temmam's supplementary figure 2. Node7 on the tree corresponds to the MRCA of the human and BANAL coronaviruses (verified by visualization on icytree.org, under "Style" -> "Internal Node Text" -> "Label").
 
-read.table("../data/segment11_v3.state", stringsAsFactors = F, header = T) -> ancrec
+#For including BtSY2 and Rp22DB159, I added their aligned fragment 11 sequences to the GARD définitif_11.fa file to make "GARD définitif_11_with_Rp22DB159_and_BtSY2", and repeated the process above.
+
+read.table("../data/segment11_revision.state", stringsAsFactors = F, header = T) -> ancrec
 s2anc <- split(ancrec, ancrec$Node)$Node7
 t(apply(s2anc[c(1049:1061, 1074:1084, 1088:1090),4:7], 1, cumsum)) -> s1s2ancrec
 plot(ylim=c(0,1), xlim=c(1,30), 1, type = "n")
-for (x in 1:27) polygon(c(0 + x, 0 + x, 1 + x, 1 + x), c(1, 0, 0, 1), col = "red", border = NA) #These are Sanger sequencing .ab1 file colors (A = green, C = blue, G = black, T = red), but they're obviously not good for colorblind people. Find better colors.
-for (x in 1:27) polygon(c(0 + x, 0 + x, 1 + x, 1 + x), c(s1s2ancrec[x,3], 0, 0, s1s2ancrec[x,3]), col = "black", border = NA)
-for (x in 1:27) polygon(c(0 + x, 0 + x, 1 + x, 1 + x), c(s1s2ancrec[x,2], 0, 0, s1s2ancrec[x,2]), col = "blue", border = NA)
-for (x in 1:27) polygon(c(0 + x, 0 + x, 1 + x, 1 + x), c(s1s2ancrec[x,1], 0, 0, s1s2ancrec[x,1]), col = "green", border = NA)
+for (x in 1:27) polygon(c(0 + x, 0 + x, 1 + x, 1 + x), c(1, 0, 0, 1), col = "#440154", border = NA) #Used colors from viridis
+for (x in 1:27) polygon(c(0 + x, 0 + x, 1 + x, 1 + x), c(s1s2ancrec[x,3], 0, 0, s1s2ancrec[x,3]), col = "#31688E", border = NA)
+for (x in 1:27) polygon(c(0 + x, 0 + x, 1 + x, 1 + x), c(s1s2ancrec[x,2], 0, 0, s1s2ancrec[x,2]), col = "#35B779", border = NA)
+for (x in 1:27) polygon(c(0 + x, 0 + x, 1 + x, 1 + x), c(s1s2ancrec[x,1], 0, 0, s1s2ancrec[x,1]), col = "#FDE725", border = NA)
+
+read.table("../data/segment11_revision.state", stringsAsFactors = F, header = T) -> ancrec_was
+s2anc_was <- split(ancrec_was, ancrec_was$Node)$Node8
+t(apply(s2anc_was[c(1049:1061, 1074:1084, 1088:1090),4:7], 1, cumsum)) -> s1s2ancrec_was
+plot(ylim=c(0,1), xlim=c(1,30), 1, type = "n")
+for (x in 1:27) polygon(c(0 + x, 0 + x, 1 + x, 1 + x), c(1, 0, 0, 1), col = "#440154", border = NA)
+for (x in 1:27) polygon(c(0 + x, 0 + x, 1 + x, 1 + x), c(s1s2ancrec_was[x,3], 0, 0, s1s2ancrec_was[x,3]), col = "#31688E", border = NA)
+for (x in 1:27) polygon(c(0 + x, 0 + x, 1 + x, 1 + x), c(s1s2ancrec_was[x,2], 0, 0, s1s2ancrec_was[x,2]), col = "#35B779", border = NA)
+for (x in 1:27) polygon(c(0 + x, 0 + x, 1 + x, 1 + x), c(s1s2ancrec_was[x,1], 0, 0, s1s2ancrec_was[x,1]), col = "#FDE725", border = NA)
 
 #Simulate 100 genomes with the nucleotide frequency seen in the SARS-CoV-2 genome; see how often there are 12-nt stretches with N matches to the insert.
 nucdist <- table(strsplit(as.character(sars2genome), "")[[1]])
@@ -165,4 +175,59 @@ count.matches.to.insert.in.simulated.genomes <- function (replicates, acgt.dist 
 
 matches.to.inserts <- count.matches.to.insert.in.simulated.genomes(1000)
 mean(matches.to.inserts)
-save(matches.to.inserts, file = "../data/output_matches-to-inserts-sim.RData")
+save(matches.to.inserts, file = "../data/output_matches-to-inserts-sim_revision.RData")
+
+#Calculation of confidence intervals for the normalized likelihood of interrupting vs clean insertion
+set.seed(100)
+
+k0 =   0; n0 = 152
+k1 = 138; n1 = 152
+k2 =  28; n2 =  32
+k3 =  72; n3 =  79
+k4 =   4; n4 =  79
+
+#50,000 bootstraps
+B = 50000
+
+# probabilities for bootstrap
+#edge case for mle p=0 ('plus-two')
+p0_hat = (k0+1)/(n0+2) ; p1_hat = k1/n1; p2_hat = k2/n2 ; p3_hat = k3/n3 ; p4_hat = k4/n4
+
+# draw bootstrap counts
+K0=rbinom(B, n0, p0_hat); K1=rbinom(B, n1, p1_hat); K2=rbinom(B, n2, p2_hat); K3=rbinom(B, n3, p3_hat); K4=rbinom(B, n4, p4_hat)
+
+# convert to proportions
+P0 = K0/n0
+P1 = K1/n1
+P2 = K2/n2
+P3 = K3/n3
+P4 = K4/n4
+
+A  = P1 * P2 * P3
+B  = P0 * P2 * P3
+C  = P1 * P2 * P4
+
+pi_boot = 2*A / (2*A + B + C)
+ci = quantile(pi_boot, c(0.025, 0.5, 0.975), names = FALSE)
+ci
+
+#Removing highly identical sequences from the Figure 1B tree: how identical are they?
+
+temmam <- readDNAMultipleAlignment("../data/GARD définitif_11.fa")
+
+percent.identity <- function (x, y) {
+  xnew <- strsplit(as.character(x), "")[[1]]
+  ynew <- strsplit(as.character(y), "")[[1]]
+  gap.positions <- unique(c(which(xnew == "-"), which(ynew == "-")))
+  length(which(xnew[-gap.positions] == ynew[-gap.positions]))/length(xnew[-gap.positions])
+}
+
+percent.identity(temmam@unmasked$`BANAL-20-52_Rhinolophus_malayanus_CoV`, temmam@unmasked$`BANAL-20-103_Rhinolophus_pusillus_CoV`)
+percent.identity(temmam@unmasked$`BANAL-20-52_Rhinolophus_malayanus_CoV`, temmam@unmasked$`BANAL-20-236_Rhinolophus_marshalli_CoV`)
+percent.identity(temmam@unmasked$`BANAL-20-103_Rhinolophus_pusillus_CoV`, temmam@unmasked$`BANAL-20-236_Rhinolophus_marshalli_CoV`)
+
+percent.identity(temmam@unmasked$EPI_ISL_852604_Rhinolophus_shameli_RShSTT182_Cambodia_2010, temmam@unmasked$EPI_ISL_852605_Rhinolophus_shameli_RShSTT200_Cambodia_2010)
+
+percent.identity(temmam@unmasked$`EPI_ISL_410721_Manis_javanica_Guangdong-1_China_2019`, temmam@unmasked$`EPI_ISL_471467_Manis_javanica_Guangdong-A22-2_China_2019`)
+percent.identity(temmam@unmasked$`EPI_ISL_410721_Manis_javanica_Guangdong-1_China_2019`, temmam@unmasked$MT121216_Manis_javanica_MP789_China_2019)
+percent.identity(temmam@unmasked$`EPI_ISL_471467_Manis_javanica_Guangdong-A22-2_China_2019`, temmam@unmasked$MT121216_Manis_javanica_MP789_China_2019)
